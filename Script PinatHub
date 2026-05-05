@@ -1,0 +1,110 @@
+-- Xóa UI cũ nếu đã tồn tại
+if game.CoreGui:FindFirstChild("PinatHubKeySystem") then
+    game.CoreGui.PinatHubKeySystem:Destroy()
+end
+
+-- TẠO GIAO DIỆN CHÍNH
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+local KeyBox = Instance.new("TextBox")
+local CheckBtn = Instance.new("TextButton")
+local CopyBtn = Instance.new("TextButton")
+local UICorner = Instance.new("UICorner")
+
+ScreenGui.Name = "PinatHubKeySystem"
+ScreenGui.Parent = game.CoreGui
+
+-- Khung Menu màu tối chuyên nghiệp
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
+MainFrame.Size = UDim2.new(0, 300, 0, 200)
+MainFrame.Active = true
+MainFrame.Draggable = true -- Có thể kéo di chuyển
+
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0, 15)
+MainCorner.Parent = MainFrame
+
+-- Tiêu đề Pinat Hub
+Title.Parent = MainFrame
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.Text = "PINAT HUB - KEY SYSTEM"
+Title.TextColor3 = Color3.fromRGB(255, 100, 100) -- Đỏ nhẹ
+Title.TextSize = 20
+Title.Font = Enum.Font.SourceSansBold
+Title.BackgroundTransparency = 1
+
+-- Nút Sao Chép Link
+CopyBtn.Parent = MainFrame
+CopyBtn.Position = UDim2.new(0.1, 0, 0.25, 0)
+CopyBtn.Size = UDim2.new(0.8, 0, 0, 35)
+CopyBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+CopyBtn.Text = "Sao Chép Link Get Key"
+CopyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+CopyBtn.Font = Enum.Font.SourceSans
+CopyBtn.TextSize = 16
+
+local BtnCorner1 = Instance.new("UICorner")
+BtnCorner1.Parent = CopyBtn
+
+CopyBtn.MouseButton1Click:Connect(function()
+    setclipboard("https://link4m.net/U7etQ")
+    
+    -- Thông báo hiện trên màn hình
+    local Notify = Instance.new("TextLabel")
+    Notify.Parent = ScreenGui
+    Notify.Size = UDim2.new(0, 350, 0, 50)
+    Notify.Position = UDim2.new(0.5, -175, 0.2, 0)
+    Notify.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    Notify.TextColor3 = Color3.fromRGB(255, 120, 120) -- Màu đỏ nhẹ
+    Notify.Text = "Dán lên trình duyệt để getkey"
+    Notify.Font = Enum.Font.SourceSansBold
+    Notify.TextSize = 20
+    
+    local NotiCorner = Instance.new("UICorner")
+    NotiCorner.Parent = Notify
+    
+    task.wait(3)
+    Notify:Destroy()
+end)
+
+-- Ô Nhập Key
+KeyBox.Parent = MainFrame
+KeyBox.Position = UDim2.new(0.1, 0, 0.5, 0)
+KeyBox.Size = UDim2.new(0.8, 0, 0, 35)
+KeyBox.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+KeyBox.PlaceholderText = "Nhập mã Key vào đây..."
+KeyBox.Text = ""
+KeyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+local BoxCorner = Instance.new("UICorner")
+BoxCorner.Parent = KeyBox
+
+-- Nút Xác Nhận
+CheckBtn.Parent = MainFrame
+CheckBtn.Position = UDim2.new(0.1, 0, 0.75, 0)
+CheckBtn.Size = UDim2.new(0.8, 0, 0, 35)
+CheckBtn.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
+CheckBtn.Text = "Kích Hoạt Script"
+CheckBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+CheckBtn.Font = Enum.Font.SourceSansBold
+CheckBtn.TextSize = 18
+
+local BtnCorner2 = Instance.new("UICorner")
+BtnCorner2.Parent = CheckBtn
+
+CheckBtn.MouseButton1Click:Connect(function()
+    if KeyBox.Text == "Ronnie_HTK:1611" then
+        ScreenGui:Destroy() -- Đóng menu key
+        print("Key Đúng! Đang tải Pinat Hub...")
+        -- Chạy script chính
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/xploitforceofficial-stack/pinatpublicloader/refs/heads/main/pinatloader.lua"))()
+    else
+        CheckBtn.Text = "SAI KEY! THỬ LẠI"
+        task.wait(2)
+        CheckBtn.Text = "Kích Hoạt Script"
+    end
+end)
