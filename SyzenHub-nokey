@@ -1,0 +1,165 @@
+--[[ 
+    SYZENHUB - SKY BLUE SPARKLE EDITION
+    LINK GET KEY: https://link4m.net/oPcPjbVp
+    KEY: HTK.Ronnei_keyscript14/5/2@25
+]]
+
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local UIStroke = Instance.new("UIStroke")
+local UIGradient = Instance.new("UIGradient")
+local Title = Instance.new("TextLabel")
+local KeyInput = Instance.new("TextBox")
+local CopyBtn = Instance.new("TextButton")
+local SubmitBtn = Instance.new("TextButton")
+local NoteLabel = Instance.new("TextLabel")
+
+-- Cấu hình ScreenGui
+ScreenGui.Parent = game.CoreGui
+ScreenGui.Name = "SyzenHub_SkyEdition"
+ScreenGui.ResetOnSpawn = false
+
+-- Hàm tạo thông báo đỏ nhẹ khi sao chép
+local function NotifyMessage(text, color, duration)
+    local NotifyGui = Instance.new("ScreenGui")
+    NotifyGui.Parent = game.CoreGui
+    
+    local Label = Instance.new("TextLabel")
+    Label.Parent = NotifyGui
+    Label.Size = UDim2.new(0, 600, 0, 50)
+    Label.Position = UDim2.new(0.5, -300, 0.15, 0)
+    Label.BackgroundTransparency = 1
+    Label.TextColor3 = color or Color3.fromRGB(255, 110, 110)
+    Label.Text = text
+    Label.Font = Enum.Font.GothamBold
+    Label.TextSize = 25
+    Label.TextStrokeTransparency = 0.5
+    Label.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+    
+    task.spawn(function()
+        task.wait(duration or 3.5)
+        for i = 0, 1, 0.1 do
+            Label.TextTransparency = i
+            Label.TextStrokeTransparency = 0.5 + (i * 0.5)
+            task.wait(0.05)
+        end
+        NotifyGui:Destroy()
+    end)
+end
+
+-- Khung Menu Chính (Xanh da trời lấp lánh)
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MainFrame.Position = UDim2.new(0.5, -175, 0.5, -145)
+MainFrame.Size = UDim2.new(0, 350, 0, 300)
+MainFrame.Active = true
+MainFrame.Draggable = true
+
+UICorner.CornerRadius = UDim.new(0, 16)
+UICorner.Parent = MainFrame
+
+-- Hiệu ứng Gradient Xanh da trời lấp lánh nhẹ
+UIGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(180, 230, 255)), -- Xanh da trời nhạt
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(220, 245, 255)), -- Trắng xanh lấp lánh
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(160, 210, 255))  -- Xanh da trời sâu hơn chút
+}
+UIGradient.Parent = MainFrame
+
+-- Script tạo hiệu ứng lấp lánh bằng cách xoay Gradient
+task.spawn(function()
+    while true do
+        for i = 0, 360, 1 do
+            UIGradient.Rotation = i
+            task.wait(0.03)
+        end
+    end
+end)
+
+UIStroke.Parent = MainFrame
+UIStroke.Thickness = 3
+UIStroke.Color = Color3.fromRGB(255, 255, 255)
+UIStroke.Transparency = 0.2
+
+-- Tiêu đề SyzenHub
+Title.Parent = MainFrame
+Title.Text = "SYZENHUB"
+Title.Font = Enum.Font.GothamBlack
+Title.TextColor3 = Color3.fromRGB(60, 90, 120) -- Xanh đậm hài hòa
+Title.TextSize = 24
+Title.Size = UDim2.new(1, 0, 0, 55)
+Title.BackgroundTransparency = 1
+
+-- Ô nhập Key
+KeyInput.Parent = MainFrame
+KeyInput.PlaceholderText = "Nhập Key tại đây..."
+KeyInput.Text = ""
+KeyInput.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+KeyInput.BackgroundTransparency = 0.5
+KeyInput.Position = UDim2.new(0.1, 0, 0.22, 0)
+KeyInput.Size = UDim2.new(0.8, 0, 0, 35)
+KeyInput.TextColor3 = Color3.fromRGB(0, 0, 0)
+KeyInput.Font = Enum.Font.GothamSemibold
+Instance.new("UICorner", KeyInput).CornerRadius = UDim.new(0, 8)
+
+-- Nút Sao chép Link
+CopyBtn.Parent = MainFrame
+CopyBtn.Text = "SAO CHÉP LINK GET KEY"
+CopyBtn.Font = Enum.Font.GothamBold
+CopyBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+CopyBtn.BackgroundTransparency = 0.6
+CopyBtn.TextColor3 = Color3.fromRGB(255, 110, 110) -- Đỏ nhẹ
+CopyBtn.Position = UDim2.new(0.1, 0, 0.38, 5)
+CopyBtn.Size = UDim2.new(0.8, 0, 0, 32)
+Instance.new("UICorner", CopyBtn).CornerRadius = UDim.new(0, 6)
+
+-- Nút Xác nhận Key
+SubmitBtn.Parent = MainFrame
+SubmitBtn.Text = "XÁC NHẬN KEY"
+SubmitBtn.Font = Enum.Font.GothamBold
+SubmitBtn.BackgroundColor3 = Color3.fromRGB(100, 200, 255)
+SubmitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+SubmitBtn.Position = UDim2.new(0.1, 0, 0.54, 10)
+SubmitBtn.Size = UDim2.new(0.8, 0, 0, 40)
+Instance.new("UICorner", SubmitBtn).CornerRadius = UDim.new(0, 10)
+
+-- Note (Màu vàng đỏ nhẹ)
+NoteLabel.Parent = MainFrame
+NoteLabel.Text = "Chào các bạn, việc lấy Key giúp mình có thêm chút chi phí để duy trì và cập nhật script mỗi ngày. Chỉ mất 1-2 phút mong bạn đừng tức giận và tiếp tục ủng hộ mình nhé! Chúc các bạn chơi game vui vẻ!"
+NoteLabel.Font = Enum.Font.GothamMedium
+NoteLabel.TextColor3 = Color3.fromRGB(210, 140, 70) 
+NoteLabel.TextSize = 11
+NoteLabel.Size = UDim2.new(0.9, 0, 0, 60)
+NoteLabel.Position = UDim2.new(0.05, 0, 0.75, 5)
+NoteLabel.BackgroundTransparency = 1
+NoteLabel.TextWrapped = true
+
+--- XỬ LÝ SỰ KIỆN ---
+
+CopyBtn.MouseButton1Click:Connect(function()
+    setclipboard("https://link4m.net/oPcPjbVp")
+    CopyBtn.Text = "COPIED!"
+    NotifyMessage("Dán lên trình duyệt để getkey", Color3.fromRGB(255, 110, 110), 3.5)
+    task.wait(2)
+    CopyBtn.Text = "SAO CHÉP LINK GET KEY"
+end)
+
+SubmitBtn.MouseButton1Click:Connect(function()
+    if KeyInput.Text == "HTK.Ronnei_keyscript14/5/2@25" then
+        SubmitBtn.Text = "XÁC MINH THÀNH CÔNG!"
+        task.wait(1)
+        ScreenGui:Destroy()
+        -- Load script chính
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Black69Weeds/Scripts/main/SyzenHub%20Survive%20Zombie%20Arena.lua"))()
+        -- Hiện dòng chữ tri ân màu xanh lá cây nhẹ trong 1 phút (60 giây)
+        NotifyMessage("Key:ThankYouForSupportingMe", Color3.fromRGB(144, 238, 144), 60)
+    else
+        SubmitBtn.Text = "SAI KEY! NHẬP LẠI"
+        SubmitBtn.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
+        task.wait(2)
+        SubmitBtn.Text = "XÁC NHẬN KEY"
+        SubmitBtn.BackgroundColor3 = Color3.fromRGB(100, 200, 255)
+    end
+end)
