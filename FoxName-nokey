@@ -1,0 +1,154 @@
+--[[ 
+    SURVIVE FOX NAME - CYBERPUNK EDITION
+    LINK GET KEY: https://link4m.net/y3RwQ6Jb
+    KEY: HTK.RonneiKey_cd5847ba430e9f2e5807ed95125cb243
+]]
+
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local UIStroke = Instance.new("UIStroke")
+local Title = Instance.new("TextLabel")
+local KeyInput = Instance.new("TextBox")
+local CopyBtn = Instance.new("TextButton")
+local SubmitBtn = Instance.new("TextButton")
+local NoteLabel = Instance.new("TextLabel")
+
+-- Cấu hình ScreenGui
+ScreenGui.Parent = game.CoreGui
+ScreenGui.Name = "FoxName_GetKey_UI"
+ScreenGui.ResetOnSpawn = false
+
+-- Hàm tạo THÔNG BÁO CHỮ ĐỎ NHẸ RÕ NÉT khi sao chép link
+local function NotifyRed(text)
+    local NotifyGui = Instance.new("ScreenGui")
+    NotifyGui.Parent = game.CoreGui
+    
+    local Label = Instance.new("TextLabel")
+    Label.Parent = NotifyGui
+    Label.Size = UDim2.new(0, 500, 0, 50)
+    Label.Position = UDim2.new(0.5, -250, 0.23, 0)
+    Label.BackgroundTransparency = 1
+    Label.TextColor3 = Color3.fromRGB(255, 120, 120) -- Màu đỏ nhẹ (Pastel Red)
+    Label.Text = text
+    Label.Font = Enum.Font.GothamBold
+    Label.TextSize = 25
+    Label.TextStrokeTransparency = 0.4
+    Label.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+    
+    task.spawn(function()
+        task.wait(3.5)
+        for i = 0, 1, 0.1 do
+            Label.TextTransparency = i
+            Label.TextStrokeTransparency = 0.4 + (i * 0.6)
+            task.wait(0.05)
+        end
+        NotifyGui:Destroy()
+    end)
+end
+
+-- Khung Menu Chính (Nền chính: #14121f - Tím đen)
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(20, 18, 31) -- #14121f
+MainFrame.Position = UDim2.new(0.5, -175, 0.5, -150)
+MainFrame.Size = UDim2.new(0, 350, 0, 300)
+MainFrame.Active = true
+MainFrame.Draggable = true
+
+UICorner.CornerRadius = UDim.new(0, 14)
+UICorner.Parent = MainFrame
+
+-- Viền phát sáng nhẹ màu Tím phong cách Cyberpunk
+UIStroke.Parent = MainFrame
+UIStroke.Thickness = 2
+UIStroke.Color = Color3.fromRGB(187, 134, 252) -- #bb86fc (Tím pastel)
+UIStroke.Transparency = 0.3
+
+-- Tiêu đề Menu "survive Fox Name"
+Title.Parent = MainFrame
+Title.Text = "SURVIVE FOX NAME"
+Title.Font = Enum.Font.GothamBlack
+Title.TextColor3 = Color3.fromRGB(0, 240, 255) -- #00f0ff (Xanh cyan nổi bật)
+Title.TextSize = 22
+Title.Size = UDim2.new(1, 0, 0, 55)
+Title.BackgroundTransparency = 1
+
+-- Ô nhập liệu (Ô nhập liệu: #211e36 - Tím xám)
+KeyInput.Parent = MainFrame
+KeyInput.PlaceholderText = "Nhập mã Key vào đây..."
+KeyInput.Text = ""
+KeyInput.BackgroundColor3 = Color3.fromRGB(33, 30, 54) -- #211e36
+KeyInput.Position = UDim2.new(0.1, 0, 0.22, 0)
+KeyInput.Size = UDim2.new(0.8, 0, 0, 38)
+KeyInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+KeyInput.Font = Enum.Font.GothamSemibold
+KeyInput.TextSize = 14
+Instance.new("UICorner", KeyInput).CornerRadius = UDim.new(0, 8)
+
+local InputStroke = Instance.new("UIStroke", KeyInput)
+InputStroke.Thickness = 1
+InputStroke.Color = Color3.fromRGB(187, 134, 252)
+InputStroke.Transparency = 0.6
+
+-- Nút Get Key (Nút Get Key: #00f0ff hoặc #bb86fc)
+CopyBtn.Parent = MainFrame
+CopyBtn.Text = "SAO CHÉP LINK GET KEY"
+CopyBtn.Font = Enum.Font.GothamBold
+CopyBtn.TextSize = 13
+CopyBtn.BackgroundColor3 = Color3.fromRGB(0, 240, 255) -- #00f0ff (Xanh cyan rực rỡ)
+CopyBtn.TextColor3 = Color3.fromRGB(20, 18, 31) -- Chữ màu tím đen tương phản cực nét
+CopyBtn.Position = UDim2.new(0.1, 0, 0.40, 5)
+CopyBtn.Size = UDim2.new(0.8, 0, 0, 32)
+Instance.new("UICorner", CopyBtn).CornerRadius = UDim.new(0, 6)
+
+-- Nút Xác nhận Key (Tím pastel công nghệ)
+SubmitBtn.Parent = MainFrame
+SubmitBtn.Text = "XÁC NHẬN KEY"
+SubmitBtn.Font = Enum.Font.GothamBold
+SubmitBtn.TextSize = 14
+SubmitBtn.BackgroundColor3 = Color3.fromRGB(187, 134, 252) -- #bb86fc (Tím pastel)
+SubmitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+SubmitBtn.Position = UDim2.new(0.1, 0, 0.56, 8)
+SubmitBtn.Size = UDim2.new(0.8, 0, 0, 40)
+Instance.new("UICorner", SubmitBtn).CornerRadius = UDim.new(0, 10)
+
+-- NOTE CHỮ NHỎ PHÍA DƯỚI (Màu vàng đỏ nhẹ)
+NoteLabel.Parent = MainFrame
+NoteLabel.Text = "Chào các bạn, việc lấy Key giúp mình có thêm chút chi phí để duy trì và cập nhật script mỗi ngày. Chỉ mất 1-2 phút mong bạn đừng tức giận và tiếp tục ủng hộ mình nhé! Chúc các bạn chơi game vui vẻ!"
+NoteLabel.Font = Enum.Font.GothamMedium
+NoteLabel.TextColor3 = Color3.fromRGB(225, 150, 75) -- Màu vàng đỏ nhẹ rất ấm áp và dễ nhìn
+NoteLabel.TextSize = 11
+NoteLabel.Size = UDim2.new(0.9, 0, 0, 65)
+NoteLabel.Position = UDim2.new(0.05, 0, 0.75, 5)
+NoteLabel.BackgroundTransparency = 1
+NoteLabel.TextWrapped = true
+NoteLabel.TextYAlignment = Enum.TextYAlignment.Top
+
+--- LOGIC XỬ LÝ SỰ KIỆN ---
+
+CopyBtn.MouseButton1Click:Connect(function()
+    setclipboard("https://link4m.net/y3RwQ6Jb")
+    CopyBtn.Text = "ĐÃ COPY LINK!"
+    NotifyRed("Dán lên trình duyệt để getkey")
+    task.wait(2)
+    CopyBtn.Text = "SAO CHÉP LINK GET KEY"
+end)
+
+SubmitBtn.MouseButton1Click:Connect(function()
+    if KeyInput.Text == "HTK.RonneiKey_cd5847ba430e9f2e5807ed95125cb243" then
+        SubmitBtn.Text = "XÁC MINH THÀNH CÔNG!"
+        SubmitBtn.BackgroundColor3 = Color3.fromRGB(0, 255, 127) -- Đổi sang xanh lá khi đúng key
+        SubmitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        task.wait(1)
+        ScreenGui:Destroy()
+        -- Khởi động script Fox Name khi nhập đúng mã
+        loadstring(game:HttpGet("https://rawscripts.net/raw/Survive-Zombie-Arena-Foxname-instant-kill-and-auto-play-etc-keyless-218156"))()
+    else
+        SubmitBtn.Text = "SAI KEY! VUI LÒNG NHẬP LẠI"
+        SubmitBtn.BackgroundColor3 = Color3.fromRGB(255, 80, 80) -- Đổi sang đỏ khi sai key
+        task.wait(2)
+        SubmitBtn.Text = "XÁC NHẬN KEY"
+        SubmitBtn.BackgroundColor3 = Color3.fromRGB(187, 134, 252)
+    end
+end)
