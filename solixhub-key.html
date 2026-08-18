@@ -25,7 +25,6 @@
             padding: 0;
         }
         
-        /* Canvas 3D Nền */
         #webgl-canvas {
             position: fixed;
             top: 0;
@@ -36,7 +35,6 @@
             pointer-events: none;
         }
 
-        /* Khung Neon Card */
         .neon-card {
             position: relative;
             background: rgba(10, 5, 22, 0.88);
@@ -113,18 +111,18 @@
                         Trạng Thái Key:
                     </span>
                     <span class="text-emerald-400 font-bold bg-emerald-500/10 px-2.5 py-0.5 rounded border border-emerald-500/30">
-                        Sẵn Sàng
+                        Đang Hoạt Động
                     </span>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2 text-xs">
                     <div class="bg-[#120826]/90 border border-emerald-900/40 rounded-xl p-2.5 flex items-center justify-between">
-                        <span class="text-slate-400">Thời hạn:</span>
-                        <span class="text-emerald-400 font-bold">Vĩnh Viễn</span>
+                        <span class="text-slate-400">Hết hạn:</span>
+                        <span class="text-amber-400 font-bold">00:00 Hàng Ngày</span>
                     </div>
                     <div class="bg-[#120826]/90 border border-blue-900/40 rounded-xl p-2.5 flex items-center justify-between">
-                        <span class="text-slate-400">Thiết bị:</span>
-                        <span class="text-cyan-400 font-bold">Không Giới Hạn</span>
+                        <span class="text-slate-400">Múi giờ:</span>
+                        <span class="text-cyan-400 font-bold">GMT+7 (VN)</span>
                     </div>
                 </div>
             </div>
@@ -132,7 +130,7 @@
             <!-- Ô Hiển Thị Mã Key & Nút Nhận -->
             <div class="mt-4 bg-[#120826]/90 border border-cyan-500/30 rounded-2xl p-4 relative">
                 <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs font-bold text-slate-300">MÃ KEY CỦA BẠN:</span>
+                    <span class="text-xs font-bold text-slate-300">MÃ KEY HÔM NAY:</span>
                     <span id="keyStateBadge" class="text-[10px] text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">Chưa nhận</span>
                 </div>
 
@@ -183,7 +181,7 @@
                     </button>
                 </div>
                 <div class="bg-[#060210] border border-slate-800 rounded-xl p-3 text-xs font-mono text-cyan-300/90 break-all overflow-x-auto max-h-24">
-                    loadstring(game:HttpGet("https://raw.githubusercontent.com/ronnei/Ronnie.HTK/refs/heads/main/solixhub-keyless.lua"))()
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/bao8jl/solixhub/main/loader"))()
                 </div>
             </div>
 
@@ -213,10 +211,21 @@
 
         </div>
     </div>
-        <!-- Logic JS + 3D Grid Loop -->
+        <!-- Logic JS Tính Key Theo Ngày + Three.js & SFX -->
     <script>
-        const KEY_VALUE = "Solix-stealaneggfreemium";
-        const SCRIPT_VALUE = `loadstring(game:HttpGet("https://raw.githubusercontent.com/ronnei/Ronnie.HTK/refs/heads/main/solixhub-keyless.lua"))()`;
+        // Hàm tự động tính Key hôm nay theo giờ Việt Nam GMT+7
+        function getTodayKey() {
+            const now = new Date();
+            const vnTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
+            
+            const day = String(vnTime.getDate()).padStart(2, '0');
+            const month = String(vnTime.getMonth() + 1).padStart(2, '0');
+            const year = vnTime.getFullYear();
+            
+            return `Solix-${day}${month}${year}`;
+        }
+
+        const SCRIPT_VALUE = `loadstring(game:HttpGet("https://raw.githubusercontent.com/bao8jl/solixhub/main/loader"))()`;
 
         let soundEnabled = true;
         let audioCtx = null;
@@ -411,6 +420,7 @@
         function handleGetKey() {
             playSFX('click');
 
+            const currentKey = getTodayKey();
             const btn = document.getElementById("getKeyBtn");
             const btnText = document.getElementById("getKeyBtnText");
             const keyInput = document.getElementById("keyInput");
@@ -424,7 +434,7 @@
             setTimeout(() => {
                 playSFX('success');
 
-                keyInput.value = KEY_VALUE;
+                keyInput.value = currentKey;
                 keyInput.classList.remove("text-slate-500");
                 keyInput.classList.add("text-cyan-300", "neon-text-cyan");
 
@@ -434,13 +444,14 @@
                 badge.innerText = "Đã lấy ✓";
                 badge.className = "text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30 font-bold";
 
-                showToast("🎉 Đã nhận thành công Key Solix Hub!", true);
+                showToast("🎉 Đã nhận thành công Key Solix Hub hôm nay!", true);
             }, 600);
         }
 
         function handleCopyKey() {
             playSFX('copy');
-            copyTextToClipboard(KEY_VALUE, () => {
+            const currentKey = getTodayKey();
+            copyTextToClipboard(currentKey, () => {
                 showToast("✅ Đã sao chép Key vào bộ nhớ tạm!", true);
                 const btnText = document.getElementById("copyKeyBtnText");
                 btnText.innerText = "ĐÃ SAO CHÉP KEY! ✓";
