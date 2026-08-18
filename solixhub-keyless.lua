@@ -1,5 +1,5 @@
 -- =========================================================================
---             HỆ THỐNG GETKEY SOLIX HUB - SESSION ONLY (NHẬP KEY MỖI LẦN)
+--             HỆ THỐNG GETKEY SOLIX HUB - ĐỒNG BỘ 00:00 HÀNG NGÀY
 -- =========================================================================
 
 local TweenService = game:GetService("TweenService")
@@ -9,9 +9,19 @@ local Players = game:GetService("Players")
 
 local LocalPlayer = Players.LocalPlayer
 local KeyUrl = "https://link4m.org/96zx2"
-local ValidKey = "Solix-stealaneggfreemium"
 
--- Hàm khởi chạy Script chính an toàn trong luồng riêng
+-- Hàm sinh key theo ngày chuẩn GMT+7
+local function GenerateKey(offsetDays)
+    offsetDays = offsetDays or 0
+    local vnTime = os.time() + (7 * 3600) + (offsetDays * 86400)
+    local dateStr = os.date("!%d%m%Y", vnTime)
+    return "Solix-" .. dateStr
+end
+
+local TodayKey = GenerateKey(0)       -- Key hôm nay
+local YesterdayKey = GenerateKey(-1)  -- Key hôm qua (hết hạn sau 00:00)
+
+-- Hàm khởi chạy Script chính
 local function LaunchMainScript()
     task.spawn(function()
         local success, result = pcall(function()
@@ -23,7 +33,7 @@ local function LaunchMainScript()
     end)
 end
 
--- Dọn dẹp UI cũ nếu có
+-- Dọn dẹp UI cũ
 if CoreGui:FindFirstChild("SolixHub_GetKeyUI") then
     CoreGui.SolixHub_GetKeyUI:Destroy()
 end
@@ -40,13 +50,13 @@ if not ScreenGui.Parent then
     ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 end
 
--- Khung chính: Kích thước chuẩn gọn gàng 390x295
+-- Khung chính 390x295
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
 MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 MainFrame.Size = UDim2.new(0, 390, 0, 295)
 MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-MainFrame.BackgroundColor3 = Color3.fromRGB(11, 8, 19) -- #0B0813
+MainFrame.BackgroundColor3 = Color3.fromRGB(11, 8, 19)
 MainFrame.BorderSizePixel = 0
 MainFrame.Active = true
 MainFrame.Draggable = true
@@ -57,7 +67,6 @@ local MainCorner = Instance.new("UICorner")
 MainCorner.CornerRadius = UDim.new(0, 12)
 MainCorner.Parent = MainFrame
 
--- Khung viền cầu vồng chạy màu mượt mà
 local RainbowStroke = Instance.new("UIStroke")
 RainbowStroke.Thickness = 1.8
 RainbowStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
@@ -68,7 +77,7 @@ RunService.RenderStepped:Connect(function()
     RainbowStroke.Color = Color3.fromHSV(hue, 0.75, 1)
 end)
 
--- Tiêu đề chính
+-- Tiêu đề
 local TitleLabel = Instance.new("TextLabel")
 TitleLabel.Size = UDim2.new(1, -30, 0, 22)
 TitleLabel.Position = UDim2.new(0, 15, 0, 10)
@@ -83,7 +92,7 @@ TitleLabel.Parent = MainFrame
 local InputBox = Instance.new("TextBox")
 InputBox.Size = UDim2.new(1, -30, 0, 36)
 InputBox.Position = UDim2.new(0, 15, 0, 36)
-InputBox.BackgroundColor3 = Color3.fromRGB(22, 18, 36) -- #161224
+InputBox.BackgroundColor3 = Color3.fromRGB(22, 18, 36)
 InputBox.TextColor3 = Color3.fromRGB(245, 245, 255)
 InputBox.PlaceholderColor3 = Color3.fromRGB(120, 115, 140)
 InputBox.PlaceholderText = "Nhập Key xác thực vào đây..."
@@ -102,14 +111,13 @@ InputStroke.Color = Color3.fromRGB(45, 38, 70)
 InputStroke.Thickness = 1
 InputStroke.Parent = InputBox
 
--- Hàng chứa 2 nút bấm ngang
+-- Hàng chứa nút
 local ButtonsRow = Instance.new("Frame")
 ButtonsRow.Size = UDim2.new(1, -30, 0, 36)
 ButtonsRow.Position = UDim2.new(0, 15, 0, 78)
 ButtonsRow.BackgroundTransparency = 1
 ButtonsRow.Parent = MainFrame
 
--- Nút GET KEY (Cyan Neon #00F0FF)
 local GetKeyBtn = Instance.new("TextButton")
 GetKeyBtn.Size = UDim2.new(0.5, -5, 1, 0)
 GetKeyBtn.Position = UDim2.new(0, 0, 0, 0)
@@ -125,7 +133,6 @@ local GetKeyCorner = Instance.new("UICorner")
 GetKeyCorner.CornerRadius = UDim.new(0, 8)
 GetKeyCorner.Parent = GetKeyBtn
 
--- Nút KIỂM TRA KEY
 local CheckKeyBtn = Instance.new("TextButton")
 CheckKeyBtn.Size = UDim2.new(0.5, -5, 1, 0)
 CheckKeyBtn.Position = UDim2.new(0.5, 5, 0, 0)
@@ -141,7 +148,7 @@ local CheckCorner = Instance.new("UICorner")
 CheckCorner.CornerRadius = UDim.new(0, 8)
 CheckCorner.Parent = CheckKeyBtn
 
--- Thanh trạng thái
+-- Banner trạng thái
 local StatusBanner = Instance.new("Frame")
 StatusBanner.Size = UDim2.new(1, -30, 0, 24)
 StatusBanner.Position = UDim2.new(0, 15, 0, 120)
@@ -156,13 +163,13 @@ local StatusMsg = Instance.new("TextLabel")
 StatusMsg.Size = UDim2.new(1, -10, 1, 0)
 StatusMsg.Position = UDim2.new(0, 5, 0, 0)
 StatusMsg.BackgroundTransparency = 1
-StatusMsg.Text = "⚡ Nhấn 'LẤY LINK KEY' để sao chép link"
+StatusMsg.Text = "⚡ Key tự động làm mới vào lúc 00:00 hàng ngày"
 StatusMsg.TextColor3 = Color3.fromRGB(180, 175, 205)
 StatusMsg.TextSize = 10.5
 StatusMsg.Font = Enum.Font.GothamMedium
 StatusMsg.Parent = StatusBanner
 
--- Card Lưu ý
+-- Note Box
 local NoteCard = Instance.new("Frame")
 NoteCard.Size = UDim2.new(1, -30, 0, 135)
 NoteCard.Position = UDim2.new(0, 15, 0, 149)
@@ -188,13 +195,10 @@ NoteLabel.Font = Enum.Font.Gotham
 NoteLabel.TextWrapped = true
 NoteLabel.TextYAlignment = Enum.TextYAlignment.Top
 NoteLabel.TextXAlignment = Enum.TextXAlignment.Left
-NoteLabel.Text = "📌 Lưu ý:\n• script chỉ nokey trong 2 tiếng từ khi video được đăng lên đã quá 2 tiếng kể từ khi video được đăng lên nên mình xin phép được thêm key vào nhé\n• Việc lấy Key Chỉ mất 1-2 phút mong bạn đừng tức giận và tiếp tục ủng hộ mình nhé! Chúc các bạn chơi game vui vẻ!\n• Xác thực key cho mỗi phiên chơi."
+NoteLabel.Text = "📌 Lưu ý:\n• script chỉ nokey trong 2 tiếng từ khi video được đăng lên đã quá 2 tiếng kể từ khi video được đăng lên nên mình xin phép được thêm key vào nhé\n• Việc lấy Key Chỉ mất 1-2 phút mong bạn đừng tức giận và tiếp tục ủng hộ mình nhé! Chúc các bạn chơi game vui vẻ!\n• Key có hiệu lực trong ngày, hết hạn lúc 00:00."
 NoteLabel.Parent = NoteCard
 
--- =========================================================================
---                     HIỆU ỨNG NẢY & XỬ LÝ SỰ KIỆN
--- =========================================================================
-
+-- Animation Nảy nút
 local function PlayBounce(btn)
     local origSize = btn.Size
     local origPos = btn.Position
@@ -216,14 +220,14 @@ local function SetClipboardSafe(text)
     end
 end
 
--- Bấm lấy link
+-- Sự kiện Copy Link
 GetKeyBtn.MouseButton1Click:Connect(function()
     PlayBounce(GetKeyBtn)
     SetClipboardSafe(KeyUrl)
     
     StatusBanner.BackgroundColor3 = Color3.fromRGB(0, 50, 60)
     StatusMsg.TextColor3 = Color3.fromRGB(0, 240, 255)
-    StatusMsg.Text = "📋 Đã sao chép! Hãy dán lên trình duyệt để getkey."
+    StatusMsg.Text = "📋 Đã sao chép link! Hãy dán lên trình duyệt để getkey."
     
     GetKeyBtn.Text = "✔ ĐÃ SAO CHÉP"
     task.delay(2, function()
@@ -233,7 +237,7 @@ GetKeyBtn.MouseButton1Click:Connect(function()
     end)
 end)
 
--- Bấm kiểm tra key
+-- Sự kiện Kiểm tra Key
 local isChecking = false
 CheckKeyBtn.MouseButton1Click:Connect(function()
     if isChecking then return end
@@ -243,22 +247,20 @@ CheckKeyBtn.MouseButton1Click:Connect(function()
     CheckKeyBtn.Text = "⏳ Đang duyệt..."
     StatusBanner.BackgroundColor3 = Color3.fromRGB(26, 20, 45)
     StatusMsg.TextColor3 = Color3.fromRGB(240, 240, 255)
-    StatusMsg.Text = "Đang kiểm tra key..."
+    StatusMsg.Text = "Đang kiểm tra tính hợp lệ..."
     
-    task.wait(0.3)
+    task.wait(0.35)
     local enteredKey = string.gsub(InputBox.Text, "%s+", "")
     
-    if enteredKey == ValidKey then
+    if enteredKey == TodayKey then
         StatusBanner.BackgroundColor3 = Color3.fromRGB(15, 60, 30)
         StatusMsg.TextColor3 = Color3.fromRGB(80, 255, 140)
-        StatusMsg.Text = "✔ Key đúng! Đang khởi động Solix Hub..."
+        StatusMsg.Text = "✔ Key hợp lệ! Đang khởi chạy Solix Hub..."
         CheckKeyBtn.Text = "✔ THÀNH CÔNG"
         CheckKeyBtn.BackgroundColor3 = Color3.fromRGB(40, 150, 70)
         
-        -- Kích hoạt Solix Hub ngay lập tức
         LaunchMainScript()
         
-        -- Đóng và xóa UI GetKey
         task.wait(0.5)
         TweenService:Create(MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
             Position = UDim2.new(0.5, 0, 1.2, 0),
@@ -266,12 +268,24 @@ CheckKeyBtn.MouseButton1Click:Connect(function()
         }):Play()
         task.wait(0.25)
         ScreenGui:Destroy()
+        
+    elseif enteredKey == YesterdayKey then
+        isChecking = false
+        CheckKeyBtn.Text = "✔ KIỂM TRA KEY"
+        StatusBanner.BackgroundColor3 = Color3.fromRGB(70, 50, 10)
+        StatusMsg.TextColor3 = Color3.fromRGB(255, 200, 80)
+        StatusMsg.Text = "⏳ Key đã hết hạn lúc 00:00! Vui lòng lấy key mới."
+        
+        InputStroke.Color = Color3.fromRGB(255, 180, 50)
+        task.wait(0.6)
+        InputStroke.Color = Color3.fromRGB(45, 38, 70)
+        
     else
         isChecking = false
         CheckKeyBtn.Text = "✔ KIỂM TRA KEY"
         StatusBanner.BackgroundColor3 = Color3.fromRGB(60, 15, 20)
         StatusMsg.TextColor3 = Color3.fromRGB(255, 100, 100)
-        StatusMsg.Text = "✖ Key sai! Hãy thử lại."
+        StatusMsg.Text = "✖ Key không hợp lệ! Hãy bấm Lấy Link Key."
         
         InputStroke.Color = Color3.fromRGB(255, 70, 70)
         task.wait(0.5)
