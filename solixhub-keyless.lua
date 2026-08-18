@@ -1,5 +1,5 @@
 -- =========================================================================
---             HỆ THỐNG GETKEY SOLIX HUB - ĐỒNG BỘ 00:00 HÀNG NGÀY
+--       SOLIX HUB - GETKEY TỰ ĐỘNG LƯU TRONG NGÀY (RESET 00:00)
 -- =========================================================================
 
 local TweenService = game:GetService("TweenService")
@@ -9,8 +9,9 @@ local Players = game:GetService("Players")
 
 local LocalPlayer = Players.LocalPlayer
 local KeyUrl = "https://link4m.org/96zx2"
+local KeySaveFile = "SolixHub_DailyKey.txt"
 
--- Hàm sinh key theo ngày chuẩn GMT+7 (Việt Nam)
+-- Hàm tính Key theo ngày GMT+7 (Việt Nam)
 local function GenerateKey(offsetDays)
     offsetDays = offsetDays or 0
     local vnTime = os.time() + (7 * 3600) + (offsetDays * 86400)
@@ -32,6 +33,15 @@ local function LaunchMainScript()
     end)
 end
 
+-- TỰ ĐỘNG BỎ QUA GETKEY NẾU HÔM NAY ĐÃ NHẬP RỒI
+if isfile and isfile(KeySaveFile) then
+    local savedKey = readfile(KeySaveFile)
+    if savedKey == TodayKey then
+        LaunchMainScript()
+        return
+    end
+end
+
 -- Dọn dẹp UI cũ nếu có
 if CoreGui:FindFirstChild("SolixHub_GetKeyUI") then
     CoreGui.SolixHub_GetKeyUI:Destroy()
@@ -49,7 +59,7 @@ if not ScreenGui.Parent then
     ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 end
 
--- Khung chính 390x295 (Căn giữa chuẩn màn hình)
+-- Khung chính 390x295 (Căn giữa chuẩn)
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
 MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -66,7 +76,7 @@ local MainCorner = Instance.new("UICorner")
 MainCorner.CornerRadius = UDim.new(0, 12)
 MainCorner.Parent = MainFrame
 
--- Khung viền cầu vồng chạy màu mượt
+-- Khung viền cầu vồng
 local RainbowStroke = Instance.new("UIStroke")
 RainbowStroke.Thickness = 1.8
 RainbowStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
@@ -111,7 +121,7 @@ InputStroke.Color = Color3.fromRGB(45, 38, 70)
 InputStroke.Thickness = 1
 InputStroke.Parent = InputBox
 
--- Hàng chứa nút bấm
+-- Hàng chứa nút bấm song song
 local ButtonsRow = Instance.new("Frame")
 ButtonsRow.Size = UDim2.new(1, -30, 0, 36)
 ButtonsRow.Position = UDim2.new(0, 15, 0, 78)
@@ -148,7 +158,7 @@ local CheckCorner = Instance.new("UICorner")
 CheckCorner.CornerRadius = UDim.new(0, 8)
 CheckCorner.Parent = CheckKeyBtn
 
--- Banner trạng thái & cảnh báo
+-- Banner trạng thái
 local StatusBanner = Instance.new("Frame")
 StatusBanner.Size = UDim2.new(1, -30, 0, 26)
 StatusBanner.Position = UDim2.new(0, 15, 0, 119)
@@ -163,7 +173,7 @@ local StatusMsg = Instance.new("TextLabel")
 StatusMsg.Size = UDim2.new(1, -12, 1, 0)
 StatusMsg.Position = UDim2.new(0, 6, 0, 0)
 StatusMsg.BackgroundTransparency = 1
-StatusMsg.Text = "⚡ Key tự động đổi mới sau 00:00 hàng ngày"
+StatusMsg.Text = "⚡ Chỉ cần nhập 1 lần / ngày - Tự động ghi nhớ"
 StatusMsg.TextColor3 = Color3.fromRGB(180, 175, 205)
 StatusMsg.TextSize = 9.5
 StatusMsg.Font = Enum.Font.GothamMedium
@@ -196,7 +206,7 @@ NoteLabel.Font = Enum.Font.Gotham
 NoteLabel.TextWrapped = true
 NoteLabel.TextYAlignment = Enum.TextYAlignment.Top
 NoteLabel.TextXAlignment = Enum.TextXAlignment.Left
-NoteLabel.Text = "📌 Lưu ý:\n• script chỉ nokey trong 2 tiếng từ khi video được đăng lên đã quá 2 tiếng kể từ khi video được đăng lên nên mình xin phép được thêm key vào nhé\n• Việc lấy Key Chỉ mất 1-2 phút mong bạn đừng tức giận và tiếp tục ủng hộ mình nhé! Chúc các bạn chơi game vui vẻ!\n• Key có hiệu lực trong ngày, tự động hết hạn lúc 00:00."
+NoteLabel.Text = "📌 Lưu ý:\n• script chỉ nokey trong 2 tiếng từ khi video được đăng lên đã quá 2 tiếng kể từ khi video được đăng lên nên mình xin phép được thêm key vào nhé\n• Việc lấy Key Chỉ mất 1-2 phút mong bạn đừng tức giận và tiếp tục ủng hộ mình nhé! Chúc các bạn chơi game vui vẻ!\n• Tự động lưu key cả ngày (hết hạn lúc 00:00 đêm)."
 NoteLabel.Parent = NoteCard
 
 -- Hiệu ứng Nảy nút
@@ -221,7 +231,7 @@ local function SetClipboardSafe(text)
     end
 end
 
--- Bấm sao chép link
+-- Bấm lấy link
 GetKeyBtn.MouseButton1Click:Connect(function()
     PlayBounce(GetKeyBtn)
     SetClipboardSafe(KeyUrl)
@@ -254,10 +264,14 @@ CheckKeyBtn.MouseButton1Click:Connect(function()
     local enteredKey = string.gsub(InputBox.Text, "%s+", "")
     
     if enteredKey == TodayKey then
-        -- Key chính xác của hôm nay
+        -- Lưu key hôm nay vào máy để các lần vào sau tự bỏ qua UI
+        if writefile then
+            writefile(KeySaveFile, TodayKey)
+        end
+
         StatusBanner.BackgroundColor3 = Color3.fromRGB(15, 60, 30)
         StatusMsg.TextColor3 = Color3.fromRGB(80, 255, 140)
-        StatusMsg.Text = "✔ Key hợp lệ! Đang khởi chạy Solix Hub..."
+        StatusMsg.Text = "✔ Key hợp lệ! Đã lưu key hôm nay..."
         CheckKeyBtn.Text = "✔ THÀNH CÔNG"
         CheckKeyBtn.BackgroundColor3 = Color3.fromRGB(40, 150, 70)
         
@@ -271,14 +285,12 @@ CheckKeyBtn.MouseButton1Click:Connect(function()
         task.wait(0.25)
         ScreenGui:Destroy()
     else
-        -- Key nhập sai hoặc đã hết hạn
         isChecking = false
         CheckKeyBtn.Text = "✔ KIỂM TRA KEY"
         StatusBanner.BackgroundColor3 = Color3.fromRGB(65, 15, 20)
         StatusMsg.TextColor3 = Color3.fromRGB(255, 100, 100)
         StatusMsg.Text = "✖ key không hợp lệ hoặc đã hết hạn.Vui Lòng GetKey Lại Để Lấy Key Hợp Lệ!"
         
-        -- Hiệu ứng cảnh báo viền đỏ ô nhập
         InputStroke.Color = Color3.fromRGB(255, 70, 70)
         task.wait(0.6)
         InputStroke.Color = Color3.fromRGB(45, 38, 70)
