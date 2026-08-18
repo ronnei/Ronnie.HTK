@@ -6,7 +6,7 @@
     <title>Solix Hub - Trang Nhận Key Official</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Three.js cho nền 3D Grid Loop -->
+    <!-- Three.js cho hiệu ứng 3D Grid Loop -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -36,7 +36,7 @@
             pointer-events: none;
         }
 
-        /* Neon Card Frame chuẩn như ảnh 3143.jpg */
+        /* Khung Neon Card */
         .neon-card {
             position: relative;
             background: rgba(10, 5, 22, 0.88);
@@ -81,13 +81,12 @@
     <!-- Canvas 3D Nền -->
     <canvas id="webgl-canvas"></canvas>
 
-    <!-- Card Nhận Key Chính -->
+    <!-- Thẻ Card Nhận Key Chính -->
     <div class="w-full max-w-md z-10 my-auto" style="perspective: 1000px;">
         <div id="mainCard" class="neon-card p-6 sm:p-7 shadow-2xl">
             
-            <!-- Header Logo & Title -->
+            <!-- Logo & Tiêu đề -->
             <div class="flex flex-col items-center text-center">
-                <!-- Logo Icon -->
                 <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-cyan-400 via-purple-500 to-pink-500 p-0.5 mb-3 shadow-lg shadow-purple-500/30">
                     <div class="w-full h-full bg-[#0a0516] rounded-[14px] flex items-center justify-center">
                         <svg class="w-8 h-8 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
@@ -104,7 +103,7 @@
                 </p>
             </div>
 
-            <!-- Chỉ số Key -->
+            <!-- Trạng thái & Thông tin Key -->
             <div class="mt-5 space-y-2 text-xs">
                 <div class="bg-[#120826]/90 border border-purple-900/50 rounded-xl p-3 flex items-center justify-between">
                     <span class="text-slate-300 font-medium flex items-center gap-2">
@@ -130,14 +129,13 @@
                 </div>
             </div>
 
-            <!-- Khung Mã Key -->
+            <!-- Ô Hiển Thị Mã Key & Nút Nhận -->
             <div class="mt-4 bg-[#120826]/90 border border-cyan-500/30 rounded-2xl p-4 relative">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-xs font-bold text-slate-300">MÃ KEY CỦA BẠN:</span>
                     <span id="keyStateBadge" class="text-[10px] text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">Chưa nhận</span>
                 </div>
 
-                <!-- Box Input -->
                 <div class="bg-[#060210] border border-slate-700/80 rounded-xl p-3 text-center">
                     <input 
                         type="text" 
@@ -148,7 +146,6 @@
                     >
                 </div>
 
-                <!-- Nút Nhận Key -->
                 <button 
                     id="getKeyBtn" 
                     onclick="handleGetKey()" 
@@ -160,20 +157,19 @@
                     <span id="getKeyBtnText">NHẬN KEY NGAY</span>
                 </button>
 
-                <!-- Nút Sao Chép Key (Khi đã nhận) -->
                 <button 
                     id="copyKeyBtn" 
                     onclick="handleCopyKey()" 
                     class="hidden w-full mt-3 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-extrabold py-3 px-4 rounded-xl text-xs sm:text-sm transition-all duration-200 shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 cursor-pointer"
                 >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/>
                     </svg>
                     <span id="copyKeyBtnText">SAO CHÉP KEY VÀO BỘ NHỚ TẠM</span>
                 </button>
             </div>
 
-            <!-- Khung Chứa Script Roblox (Cập nhật script ronnei/Ronnie.HTK) -->
+            <!-- Khung Chứa Script Roblox -->
             <div class="mt-4 bg-[#120826]/90 border border-purple-900/40 rounded-2xl p-4">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
@@ -191,7 +187,7 @@
                 </div>
             </div>
 
-            <!-- Bật/Tắt Âm Thanh SFX Row -->
+            <!-- Hàng bật/tắt SFX -->
             <div class="mt-4 flex items-center justify-between text-xs text-slate-300 px-1">
                 <span class="flex items-center gap-1.5">
                     🔊 Hiệu ứng âm thanh SFX:
@@ -208,7 +204,7 @@
             <!-- Toast Thông Báo -->
             <div id="toast" class="opacity-0 translate-y-2 transition-all duration-300 mt-3 p-2.5 rounded-xl text-center text-xs font-semibold hidden"></div>
 
-            <!-- Footer Line & Text -->
+            <!-- Footer -->
             <div class="mt-5 pt-3 border-t border-slate-800/80 text-center">
                 <p class="text-xs text-slate-400">
                     Tận hưởng trải nghiệm Solix Hub tốt nhất!
@@ -217,8 +213,7 @@
 
         </div>
     </div>
-
-    <!-- JavaScript Engine -->
+        <!-- Logic JS + 3D Grid Loop -->
     <script>
         const KEY_VALUE = "Solix-stealaneggfreemium";
         const SCRIPT_VALUE = `loadstring(game:HttpGet("https://raw.githubusercontent.com/ronnei/Ronnie.HTK/refs/heads/main/solixhub-keyless.lua"))()`;
@@ -226,7 +221,6 @@
         let soundEnabled = true;
         let audioCtx = null;
 
-        // Web Audio Synthesizer
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -293,7 +287,6 @@
             if (soundEnabled) playSFX('click');
         }
 
-        // Three.js 3D Endless Grid Loop Nền
         let scene, camera, renderer, gridFloor, gridCeiling, particleSystem;
 
         function init3DBackground() {
@@ -386,7 +379,6 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // Nghiêng card theo vị trí chuột
         const mainCard = document.getElementById("mainCard");
         document.addEventListener("mousemove", (e) => {
             const { clientX, clientY } = e;
@@ -396,10 +388,9 @@
             mainCard.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
         });
 
-        // Logic Nhận Key & Copy
         function showToast(msg, isSuccess = true) {
             const toast = document.getElementById("toast");
-            toast.classList.remove("hidden", "opacity-0", "translate-y-2", "bg-emerald-500/20", "text-emerald-300", "border-emerald-500/30", "bg-rose-500/20", "text-rose-300", "border-rose-500/30");
+            toast.className = "opacity-0 translate-y-2 transition-all duration-300 mt-3 p-2.5 rounded-xl text-center text-xs font-semibold";
             
             if (isSuccess) {
                 toast.classList.add("bg-emerald-500/20", "text-emerald-300", "border", "border-emerald-500/30");
@@ -437,4 +428,52 @@
                 keyInput.classList.remove("text-slate-500");
                 keyInput.classList.add("text-cyan-300", "neon-text-cyan");
 
-         
+                btn.classList.add("hidden");
+                copyKeyBtn.classList.remove("hidden");
+
+                badge.innerText = "Đã lấy ✓";
+                badge.className = "text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30 font-bold";
+
+                showToast("🎉 Đã nhận thành công Key Solix Hub!", true);
+            }, 600);
+        }
+
+        function handleCopyKey() {
+            playSFX('copy');
+            copyTextToClipboard(KEY_VALUE, () => {
+                showToast("✅ Đã sao chép Key vào bộ nhớ tạm!", true);
+                const btnText = document.getElementById("copyKeyBtnText");
+                btnText.innerText = "ĐÃ SAO CHÉP KEY! ✓";
+                setTimeout(() => { btnText.innerText = "SAO CHÉP KEY VÀO BỘ NHỚ TẠM"; }, 2000);
+            });
+        }
+
+        function handleCopyScript() {
+            playSFX('copy');
+            copyTextToClipboard(SCRIPT_VALUE, () => {
+                showToast("✅ Đã sao chép Script Solix Hub!", true);
+            });
+        }
+
+        function copyTextToClipboard(text, callback) {
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.style.position = "fixed";
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                if (callback) callback();
+            } catch (err) {
+                showToast("Lỗi sao chép tự động!", false);
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        }
+
+        window.onload = () => {
+            init3DBackground();
+        };
+    </script>
+</body>
+</html>
