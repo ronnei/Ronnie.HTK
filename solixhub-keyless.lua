@@ -1,5 +1,5 @@
 -- =========================================================================
---       HỆ THỐNG GETKEY SOLIX HUB - BẢN COMPACT GỌN GÀNG CHO MOBILE/PC
+--             HỆ THỐNG GETKEY SOLIX HUB - SESSION ONLY (NHẬP KEY MỖI LẦN)
 -- =========================================================================
 
 local TweenService = game:GetService("TweenService")
@@ -10,23 +10,20 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local KeyUrl = "https://link4m.org/96zx2"
 local ValidKey = "Solix-stealaneggfreemium"
-local KeySavePath = "SolixHub_SavedKey.txt"
 
--- Hàm khởi chạy Script chính
+-- Hàm khởi chạy Script chính an toàn trong luồng riêng
 local function LaunchMainScript()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/bao8jl/solixhub/main/loader"))()
+    task.spawn(function()
+        local success, result = pcall(function()
+            return loadstring(game:HttpGet("https://raw.githubusercontent.com/bao8jl/solixhub/main/loader"))()
+        end)
+        if not success then
+            warn("[Solix Hub Error]:", result)
+        end
+    end)
 end
 
--- Tự động kiểm tra Key vĩnh viễn đã lưu
-if isfile and isfile(KeySavePath) then
-    local saved = readfile(KeySavePath)
-    if saved == ValidKey then
-        LaunchMainScript()
-        return
-    end
-end
-
--- Xóa UI cũ
+-- Dọn dẹp UI cũ nếu có
 if CoreGui:FindFirstChild("SolixHub_GetKeyUI") then
     CoreGui.SolixHub_GetKeyUI:Destroy()
 end
@@ -43,7 +40,7 @@ if not ScreenGui.Parent then
     ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 end
 
--- Khung chính: Kích thước tối ưu 390x295 (Căn giữa hoàn hảo, không bị tràn màn hình)
+-- Khung chính: Kích thước chuẩn gọn gàng 390x295
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
 MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -60,7 +57,7 @@ local MainCorner = Instance.new("UICorner")
 MainCorner.CornerRadius = UDim.new(0, 12)
 MainCorner.Parent = MainFrame
 
--- Khung viền cầu vồng nháy màu chuyển động mượt
+-- Khung viền cầu vồng chạy màu mượt mà
 local RainbowStroke = Instance.new("UIStroke")
 RainbowStroke.Thickness = 1.8
 RainbowStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
@@ -82,7 +79,7 @@ TitleLabel.TextSize = 14
 TitleLabel.Font = Enum.Font.GothamBold
 TitleLabel.Parent = MainFrame
 
--- Ô nhập Key gọn gàng
+-- Ô nhập Key
 local InputBox = Instance.new("TextBox")
 InputBox.Size = UDim2.new(1, -30, 0, 36)
 InputBox.Position = UDim2.new(0, 15, 0, 36)
@@ -105,7 +102,7 @@ InputStroke.Color = Color3.fromRGB(45, 38, 70)
 InputStroke.Thickness = 1
 InputStroke.Parent = InputBox
 
--- Hàng chứa 2 nút bấm song song (Tiết kiệm tối đa chiều dọc)
+-- Hàng chứa 2 nút bấm ngang
 local ButtonsRow = Instance.new("Frame")
 ButtonsRow.Size = UDim2.new(1, -30, 0, 36)
 ButtonsRow.Position = UDim2.new(0, 15, 0, 78)
@@ -144,7 +141,7 @@ local CheckCorner = Instance.new("UICorner")
 CheckCorner.CornerRadius = UDim.new(0, 8)
 CheckCorner.Parent = CheckKeyBtn
 
--- Thanh trạng thái & Hướng dẫn (Gọn gàng)
+-- Thanh trạng thái
 local StatusBanner = Instance.new("Frame")
 StatusBanner.Size = UDim2.new(1, -30, 0, 24)
 StatusBanner.Position = UDim2.new(0, 15, 0, 120)
@@ -165,7 +162,7 @@ StatusMsg.TextSize = 10.5
 StatusMsg.Font = Enum.Font.GothamMedium
 StatusMsg.Parent = StatusBanner
 
--- Card Lưu ý bên dưới (Vàng đỏ dịu mắt, không lãng phí khoảng trống)
+-- Card Lưu ý
 local NoteCard = Instance.new("Frame")
 NoteCard.Size = UDim2.new(1, -30, 0, 135)
 NoteCard.Position = UDim2.new(0, 15, 0, 149)
@@ -185,17 +182,17 @@ local NoteLabel = Instance.new("TextLabel")
 NoteLabel.Size = UDim2.new(1, -16, 1, -10)
 NoteLabel.Position = UDim2.new(0, 8, 0, 5)
 NoteLabel.BackgroundTransparency = 1
-NoteLabel.TextColor3 = Color3.fromRGB(242, 160, 120) -- Vàng đỏ nhẹ, êm mắt
+NoteLabel.TextColor3 = Color3.fromRGB(242, 160, 120)
 NoteLabel.TextSize = 10
 NoteLabel.Font = Enum.Font.Gotham
 NoteLabel.TextWrapped = true
 NoteLabel.TextYAlignment = Enum.TextYAlignment.Top
 NoteLabel.TextXAlignment = Enum.TextXAlignment.Left
-NoteLabel.Text = "📌 Lưu ý:\n• script chỉ nokey trong 2 tiếng từ khi video được đăng lên đã quá 2 tiếng kể từ khi video được đăng lên nên mình xin phép được thêm key vào nhé\n• Việc lấy Key Chỉ mất 1-2 phút mong bạn đừng tức giận và tiếp tục ủng hộ mình nhé! Chúc các bạn chơi game vui vẻ!\n• Tự động lưu key vĩnh viễn ∞ sau khi xác thực."
+NoteLabel.Text = "📌 Lưu ý:\n• script chỉ nokey trong 2 tiếng từ khi video được đăng lên đã quá 2 tiếng kể từ khi video được đăng lên nên mình xin phép được thêm key vào nhé\n• Việc lấy Key Chỉ mất 1-2 phút mong bạn đừng tức giận và tiếp tục ủng hộ mình nhé! Chúc các bạn chơi game vui vẻ!\n• Xác thực key cho mỗi phiên chơi."
 NoteLabel.Parent = NoteCard
 
 -- =========================================================================
---                     HIỆU ỨNG NẢY NÚT & LOGIC TƯƠNG TÁC
+--                     HIỆU ỨNG NẢY & XỬ LÝ SỰ KIỆN
 -- =========================================================================
 
 local function PlayBounce(btn)
@@ -219,7 +216,7 @@ local function SetClipboardSafe(text)
     end
 end
 
--- Tương tác nút LẤY LINK
+-- Bấm lấy link
 GetKeyBtn.MouseButton1Click:Connect(function()
     PlayBounce(GetKeyBtn)
     SetClipboardSafe(KeyUrl)
@@ -236,7 +233,7 @@ GetKeyBtn.MouseButton1Click:Connect(function()
     end)
 end)
 
--- Tương tác nút KIỂM TRA KEY
+-- Bấm kiểm tra key
 local isChecking = false
 CheckKeyBtn.MouseButton1Click:Connect(function()
     if isChecking then return end
@@ -248,28 +245,27 @@ CheckKeyBtn.MouseButton1Click:Connect(function()
     StatusMsg.TextColor3 = Color3.fromRGB(240, 240, 255)
     StatusMsg.Text = "Đang kiểm tra key..."
     
-    task.wait(0.4)
+    task.wait(0.3)
     local enteredKey = string.gsub(InputBox.Text, "%s+", "")
     
     if enteredKey == ValidKey then
         StatusBanner.BackgroundColor3 = Color3.fromRGB(15, 60, 30)
         StatusMsg.TextColor3 = Color3.fromRGB(80, 255, 140)
-        StatusMsg.Text = "✔ Key đúng! Đang mở Solix Hub..."
+        StatusMsg.Text = "✔ Key đúng! Đang khởi động Solix Hub..."
         CheckKeyBtn.Text = "✔ THÀNH CÔNG"
         CheckKeyBtn.BackgroundColor3 = Color3.fromRGB(40, 150, 70)
         
-        if writefile then
-            writefile(KeySavePath, ValidKey)
-        end
+        -- Kích hoạt Solix Hub ngay lập tức
+        LaunchMainScript()
         
-        task.wait(0.6)
-        TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+        -- Đóng và xóa UI GetKey
+        task.wait(0.5)
+        TweenService:Create(MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
             Position = UDim2.new(0.5, 0, 1.2, 0),
             BackgroundTransparency = 1
         }):Play()
-        task.wait(0.3)
+        task.wait(0.25)
         ScreenGui:Destroy()
-        LaunchMainScript()
     else
         isChecking = false
         CheckKeyBtn.Text = "✔ KIỂM TRA KEY"
