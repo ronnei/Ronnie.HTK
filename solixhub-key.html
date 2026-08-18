@@ -25,7 +25,6 @@
             padding: 0;
         }
         
-        /* Canvas 3D Nền */
         #webgl-canvas {
             position: fixed;
             top: 0;
@@ -36,7 +35,6 @@
             pointer-events: none;
         }
 
-        /* Khung Neon Card */
         .neon-card {
             position: relative;
             background: rgba(10, 5, 22, 0.88);
@@ -213,31 +211,10 @@
 
         </div>
     </div>
-        <!-- Logic JS: Chống Bookmark + Tính Key Theo Ngày + Three.js 3D + SFX -->
+        <!-- Logic JS: Tính Key Theo Ngày + Three.js 3D + SFX -->
     <script>
         // =========================================================================
-        // 1. BỘ LỌC BẢO MẬT: CHỐNG TRUY CẬP TRỰC TIẾP TỪ BOOKMARK / LỊCH SỬ DUYỆT WEB
-        // =========================================================================
-        (function() {
-            const SHORTLINK_URL = "https://link4m.org/96zx2";
-            const ref = (document.referrer || "").toLowerCase();
-            
-            // Kiểm tra nguồn đến từ link4m
-            const isFromLink4m = ref.includes("link4m") || ref.includes("link4m.org") || ref.includes("link4m.co");
-            const hasValidSession = sessionStorage.getItem("unlocked_from_shortlink") === "true";
-
-            if (isFromLink4m) {
-                // Người dùng vượt link hợp lệ -> Cấp quyền cho phiên duyệt web hiện tại
-                sessionStorage.setItem("unlocked_from_shortlink", "true");
-            } else if (!hasValidSession) {
-                // Gian lận vào thẳng từ Bookmark / Nhập URL -> Chặn và đẩy về link4m
-                alert("⚠️ PHÁT HIỆN GIAN LẬN!\nBạn đang truy cập trực tiếp từ Bookmark hoặc Lịch sử duyệt web.\nVui lòng vượt link để lấy Key.");
-                window.location.replace(SHORTLINK_URL);
-            }
-        })();
-
-        // =========================================================================
-        // 2. THUẬT TOÁN TÍNH KEY THEO NGÀY (RESET TỰ ĐỘNG LÚC 00:00 GMT+7)
+        // 1. THUẬT TOÁN TÍNH KEY THEO NGÀY (RESET TỰ ĐỘNG LÚC 00:00 GMT+7)
         // =========================================================================
         function getTodayKey() {
             const now = new Date();
@@ -253,7 +230,7 @@
         const SCRIPT_VALUE = `loadstring(game:HttpGet("https://raw.githubusercontent.com/bao8jl/solixhub/main/loader"))()`;
 
         // =========================================================================
-        // 3. HIỆU ỨNG ÂM THANH SFX (WEB AUDIO API TỔNG HỢP)
+        // 2. HIỆU ỨNG ÂM THANH SFX (WEB AUDIO API TỔNG HỢP)
         // =========================================================================
         let soundEnabled = true;
         let audioCtx = null;
@@ -325,7 +302,7 @@
         }
 
         // =========================================================================
-        // 4. HIỆU ỨNG 3D GRID LOOP BẰNG THREE.JS
+        // 3. HIỆU ỨNG 3D GRID LOOP BẰNG THREE.JS
         // =========================================================================
         let scene, camera, renderer, gridFloor, gridCeiling, particleSystem;
 
@@ -430,7 +407,7 @@
         });
 
         // =========================================================================
-        // 5. XỬ LÝ SỰ KIỆN GIAO DIỆN & TOAST THÔNG BÁO
+        // 4. XỬ LÝ SỰ KIỆN GIAO DIỆN & TOAST THÔNG BÁO
         // =========================================================================
         function showToast(msg, isSuccess = true) {
             const toast = document.getElementById("toast");
