@@ -167,7 +167,7 @@
                 </button>
             </div>
 
-            <!-- Khung Chứa Script Roblox -->
+            <!-- Khung Chứa Script Roblox (Đã cập nhật link mới) -->
             <div class="mt-4 bg-[#120826]/90 border border-purple-900/40 rounded-2xl p-4">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
@@ -181,7 +181,7 @@
                     </button>
                 </div>
                 <div class="bg-[#060210] border border-slate-800 rounded-xl p-3 text-xs font-mono text-cyan-300/90 break-all overflow-x-auto max-h-24">
-                    loadstring(game:HttpGet("https://raw.githubusercontent.com/bao8jl/solixhub/main/loader"))()
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/ronnei/Ronnie.HTK/refs/heads/main/solixhub-keyless.lua"))()
                 </div>
             </div>
 
@@ -211,7 +211,8 @@
 
         </div>
     </div>
-        <!-- Logic JS: Tính Key Theo Ngày + Three.js 3D + SFX -->
+
+        <!-- Logic JS: Tính Key Theo Ngày + Script Loader Mới + Three.js 3D + SFX -->
     <script>
         // =========================================================================
         // 1. THUẬT TOÁN TÍNH KEY THEO NGÀY (RESET TỰ ĐỘNG LÚC 00:00 GMT+7)
@@ -227,7 +228,8 @@
             return `Solix-${day}${month}${year}`;
         }
 
-        const SCRIPT_VALUE = `loadstring(game:HttpGet("https://raw.githubusercontent.com/bao8jl/solixhub/main/loader"))()`;
+        // Script Loader mới đã cập nhật
+        const SCRIPT_VALUE = `loadstring(game:HttpGet("https://raw.githubusercontent.com/ronnei/Ronnie.HTK/refs/heads/main/solixhub-keyless.lua"))()`;
 
         // =========================================================================
         // 2. HIỆU ỨNG ÂM THANH SFX (WEB AUDIO API TỔNG HỢP)
@@ -396,7 +398,7 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // Hiệu ứng 3D nghiêng thẻ theo chuột
+        // Hiệu ứng 3D nghiêng thẻ theo tương tác chuột / chạm
         const mainCard = document.getElementById("mainCard");
         document.addEventListener("mousemove", (e) => {
             const { clientX, clientY } = e;
