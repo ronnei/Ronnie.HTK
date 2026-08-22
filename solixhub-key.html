@@ -217,6 +217,24 @@
         // =========================================================================
         // 1. THUẬT TOÁN TÍNH KEY THEO NGÀY (RESET TỰ ĐỘNG LÚC 00:00 GMT+7)
         // =========================================================================
+        // Mã xác thực bí mật
+const SECRET_TOKEN = "solix2026"; 
+
+// Kiểm tra token trên đường dẫn URL
+const urlParams = new URLSearchParams(window.location.search);
+const currentToken = urlParams.get('token');
+
+if (currentToken !== SECRET_TOKEN) {
+    document.body.innerHTML = `
+        <div style="background:#0a0516; color:#fff; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; font-family:sans-serif; padding:20px;">
+            <h1 style="color:#f43f5e; font-size:24px; margin-bottom:12px;">⚠️ TRUY CẬP BỊ TỪ CHỐI</h1>
+            <p style="color:#94a3b8; max-width:400px; font-size:14px; line-height:1.5;">Bạn đang vào thẳng từ Bookmark hoặc liên kết đã hết hạn.</p>
+            <p style="color:#38bdf8; margin-top:10px; font-size:13px; font-weight:bold;">Vui lòng mở lại Roblox Script và bấm "LẤY LINK KEY" để vượt link!</p>
+        </div>
+    `;
+    throw new Error("Dừng script: Token không hợp lệ.");
+}
+        
         function getTodayKey() {
             const now = new Date();
             const vnTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
