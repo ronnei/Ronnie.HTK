@@ -218,14 +218,18 @@
         // 1. THUẬT TOÁN TÍNH KEY THEO NGÀY (RESET TỰ ĐỘNG LÚC 00:00 GMT+7)
         // =========================================================================
          // =================================================================
+                // =================================================================
         // KHÓA BẢO VỆ TỰ HỦY URL (CHỐNG RELOAD / LỊCH SỬ / BOOKMARK)
         // =================================================================
         const SECRET_KEYWORD = "solix2026";
         const currentUrl = window.location.href;
-        const hasToken = currentUrl.includes("#" + SECRET_KEYWORD) || currentUrl.includes("token=" + SECRET_KEYWORD);
+        
+        // Kiểm tra xem link có chứa từ khóa bí mật không (?pass=, ?token= hoặc #)
+        const hasValidToken = currentUrl.includes("pass=" + SECRET_KEYWORD) || 
+                              currentUrl.includes("token=" + SECRET_KEYWORD) || 
+                              currentUrl.includes("#" + SECRET_KEYWORD);
 
-        if (!hasToken) {
-            // Không có mã bí mật -> Chặn truy cập
+        if (!hasValidToken) {
             document.body.innerHTML = `
                 <div style="background:#0a0516; color:#fff; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; font-family:sans-serif; padding:20px;">
                     <h1 style="color:#f43f5e; font-size:24px; margin-bottom:12px;">⚠️ TRUY CẬP BỊ TỪ CHỐI</h1>
@@ -235,7 +239,7 @@
             `;
             throw new Error("Dừng script: Không có quyền truy cập.");
         } else {
-            // Có mã bí mật -> XÓA NGAY LẬP TỨC KHỎI THANH ĐỊA CHỈ VÀ LỊCH SỬ DUYỆT WEB
+            // Khi đã vào đúng: XÓA NGAY ĐUÔI LINK ĐỂ NẾU F5 HOẶC LƯU LỊCH SỬ SẼ BỊ KHÓA
             history.replaceState(null, "", window.location.pathname);
         }
         
