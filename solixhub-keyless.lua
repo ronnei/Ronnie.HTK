@@ -8,7 +8,7 @@ local CoreGui = game:GetService("CoreGui")
 local Players = game:GetService("Players")
 
 local LocalPlayer = Players.LocalPlayer
-local KeyUrl = "https://link4m.org/96zx2"
+local KeyUrl = "https://link4m.org/dhN1DeQ"
 local TutorialUrl = "https://cbrowse.github.io/browse/getkey.html"
 
 -- Hàm sinh key theo ngày chuẩn GMT+7 (Việt Nam)
